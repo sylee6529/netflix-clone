@@ -71,13 +71,12 @@ public class UserDao {
 
         this.jdbcTemplate.update(createUserQuery, createUserParams);
 
-        System.out.println("111 update 시도");
         String lastInsertIdQuery = "select last_insert_id()";
         return this.jdbcTemplate.queryForObject(lastInsertIdQuery, int.class);
     }
 
-    public int checkEmail(String email){
-        String checkEmailQuery = "select exists(select email from UserInfo where email = ?)";
+    public int checkEmail(String email) {
+        String checkEmailQuery = "select exists(select userEmail from User where userEmail = ?)";
         String checkEmailParams = email;
         return this.jdbcTemplate.queryForObject(checkEmailQuery,
                 int.class,
