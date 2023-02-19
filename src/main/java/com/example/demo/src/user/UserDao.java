@@ -59,16 +59,24 @@ public class UserDao {
     
 
     public int createUser(PostUserReq postUserReq){
-        String createUserQuery = "insert into UserInfo (userName, ID, password, email) VALUES (?,?,?,?)";
-        Object[] createUserParams = new Object[]{postUserReq.getUserName(), postUserReq.getId(), postUserReq.getPassword(), postUserReq.getEmail()};
+        String createUserQuery = "insert into User (userEmail, userPasswd, userName, birth, " +
+                "cardExpirationDate, membership, cardNumber) " +
+                "VALUES (?, ?, ?, ?, ?, ?, ?)";
+        Object[] createUserParams = new Object[]{
+                postUserReq.getUserEmail(), postUserReq.getUserPasswd(),
+                postUserReq.getUserName(), postUserReq.getBirth(),
+                postUserReq.getCardExpirationDate(), postUserReq.getMembership(),
+                postUserReq.getCardNumber()
+        };
+
         this.jdbcTemplate.update(createUserQuery, createUserParams);
 
         String lastInsertIdQuery = "select last_insert_id()";
-        return this.jdbcTemplate.queryForObject(lastInsertIdQuery,int.class);
+        return this.jdbcTemplate.queryForObject(lastInsertIdQuery, int.class);
     }
 
-    public int checkEmail(String email){
-        String checkEmailQuery = "select exists(select email from UserInfo where email = ?)";
+    public int checkEmail(String email) {
+        String checkEmailQuery = "select exists(select userEmail from User where userEmail = ?)";
         String checkEmailParams = email;
         return this.jdbcTemplate.queryForObject(checkEmailQuery,
                 int.class,
@@ -83,17 +91,16 @@ public class UserDao {
         return this.jdbcTemplate.update(modifyUserNameQuery,modifyUserNameParams);
     }
 
-    public User getPwd(PostLoginReq postLoginReq){
-        String getPwdQuery = "select userIdx, password,email,userName,ID from UserInfo where ID = ?";
-        String getPwdParams = postLoginReq.getId();
+    public User getPwd(PostLoginReq postLoginReq) {
+        String getPwdQuery = "select userIdx, userEmail, userName, userPasswd from User where userEmail = ?";
+        String getPwdParams = postLoginReq.getEmail();
 
         return this.jdbcTemplate.queryForObject(getPwdQuery,
                 (rs,rowNum)-> new User(
                         rs.getInt("userIdx"),
-                        rs.getString("ID"),
+                        rs.getString("userEmail"),
                         rs.getString("userName"),
-                        rs.getString("password"),
-                        rs.getString("email")
+                        rs.getString("userPasswd")
                 ),
                 getPwdParams
                 );
