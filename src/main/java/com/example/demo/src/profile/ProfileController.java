@@ -11,6 +11,7 @@ import com.example.demo.src.user.UserService;
 import com.example.demo.src.user.model.GetUserRes;
 import com.example.demo.src.user.model.PostUserReq;
 import com.example.demo.src.user.model.PostUserRes;
+import com.example.demo.src.user.model.PutUserReq;
 import com.example.demo.utils.JwtService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -87,6 +88,24 @@ public class ProfileController {
             List<Profile> getProfilesRes = profileProvider.getProfiles(userIdx);
             return new BaseResponse<>(getProfilesRes);
         } catch(BaseException exception){
+            return new BaseResponse<>((exception.getStatus()));
+        }
+    }
+
+    /**
+     * 사용자 프로필 정보 수정
+     * [PUT] /profiles/:profileIdx
+     * @return BaseResponse<String>
+     */
+    @ResponseBody
+    @PutMapping("/{profileIdx}")
+    public BaseResponse<String> modifyProfile(@RequestHeader("X-ACCESS-TOKEN") String jwtToken, @RequestBody GetProfileRes getProfileRes, @PathVariable("profileIdx") int profileIdx){
+        try {
+            profileService.modifyProfile(profileIdx, getProfileRes);
+
+            String result = "요청 성공";
+            return new BaseResponse<>(result);
+        } catch (BaseException exception) {
             return new BaseResponse<>((exception.getStatus()));
         }
     }

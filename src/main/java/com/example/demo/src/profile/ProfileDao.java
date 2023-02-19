@@ -5,6 +5,7 @@ import com.example.demo.src.profile.model.GetProfileRes;
 import com.example.demo.src.profile.model.PostProfileReq;
 import com.example.demo.src.profile.model.Profile;
 import com.example.demo.src.user.model.GetUserRes;
+import com.example.demo.src.user.model.PutUserReq;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -67,5 +68,17 @@ public class ProfileDao {
                         rs.getInt("imageId"),
                         rs.getString("maturityRating")),
                 getProfilesParams);
+    }
+
+    public int modifyProfile(int profileId, GetProfileRes getProfileRes) {
+        String modifyUserNameQuery = "update UserProfile set profileName = ?, imageId = ?, displayLanguage = ?, " +
+                "audioSubtitleLanguage = ?, isEpisodeAutoplay = ?, isPreviewAutoplay = ? where profileId = ?";
+        Object[] modifyUserNameParams = new Object[] {
+                getProfileRes.getProfileName(), getProfileRes.getImageId(), getProfileRes.getDisplayLanguage(),
+                getProfileRes.getAudioAndsubtitleLanguage(), getProfileRes.getIsEpisodeAutoplay(),
+                getProfileRes.getIsPreviewAutoplay(), profileId
+        };
+
+        return this.jdbcTemplate.update(modifyUserNameQuery,modifyUserNameParams);
     }
 }
