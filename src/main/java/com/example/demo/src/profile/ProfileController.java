@@ -2,10 +2,12 @@ package com.example.demo.src.profile;
 
 import com.example.demo.config.BaseException;
 import com.example.demo.config.BaseResponse;
+import com.example.demo.src.profile.model.GetProfileRes;
 import com.example.demo.src.profile.model.PostProfileReq;
 import com.example.demo.src.profile.model.PostProfileRes;
 import com.example.demo.src.user.UserProvider;
 import com.example.demo.src.user.UserService;
+import com.example.demo.src.user.model.GetUserRes;
 import com.example.demo.src.user.model.PostUserReq;
 import com.example.demo.src.user.model.PostUserRes;
 import com.example.demo.utils.JwtService;
@@ -38,7 +40,7 @@ public class ProfileController {
     /**
      * 사용자 프로필 생성 API
      * [POST] /profiles
-     * @return BaseResponse<PostUserRes>
+     * @return BaseResponse<PostProfileRes>
      */
     @ResponseBody
     @PostMapping("")
@@ -50,6 +52,23 @@ public class ProfileController {
         } catch(BaseException exception){
             return new BaseResponse<>((exception.getStatus()));
         }
+    }
+
+    /**
+     * 사용자 프로필 상세 조회
+     * [GET] /profiles/:profileIdx
+     * @return BaseResponse<GetUserRes>
+     */
+    @ResponseBody
+    @GetMapping("/{profileIdx}") // (GET) 127.0.0.1:9000/app/profiles/:profileIdx
+    public BaseResponse<GetProfileRes> getUser(@RequestHeader("X-ACCESS-TOKEN") String jwtToken, @PathVariable("profileIdx") int profileIdx) {
+        try{
+            GetProfileRes getProfileRes = profileProvider.getProfile(profileIdx);
+            return new BaseResponse<>(getProfileRes);
+        } catch(BaseException exception){
+            return new BaseResponse<>((exception.getStatus()));
+        }
+
     }
 
 }
