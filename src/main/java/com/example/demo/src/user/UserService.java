@@ -33,9 +33,9 @@ public class UserService {
 
     public PostUserRes createUser(PostUserReq postUserReq) throws BaseException {
         // 사용자 중복 체크
-//        if(userProvider.checkEmail(postUserReq.getUserEmail()) ==1){
-//            throw new BaseException(POST_USERS_EXISTS_EMAIL);
-//        }
+        if(userProvider.checkEmail(postUserReq.getUserEmail()) == 1){
+            throw new BaseException(POST_USERS_EXISTS_EMAIL);
+        }
 
         // 비밀번호 암호화
         String pwd;

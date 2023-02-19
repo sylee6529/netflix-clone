@@ -86,12 +86,10 @@ public class UserController {
     @PostMapping("/signup")
     public BaseResponse<PostUserRes> createUser(@RequestBody PostUserReq postUserReq) {
         // 이메일 형식적 Validation 처리
-        if(postUserReq.getUserEmail() == null){
-            return new BaseResponse<>(POST_USERS_EMPTY_EMAIL);
-        }
         if(!isRegexEmail(postUserReq.getUserEmail())){
             return new BaseResponse<>(POST_USERS_INVALID_EMAIL);
         }
+
         try{
             PostUserRes postUserRes = userService.createUser(postUserReq);
             return new BaseResponse<>(postUserRes);
