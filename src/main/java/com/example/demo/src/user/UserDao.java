@@ -7,7 +7,6 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
-import java.util.List;
 
 @Repository
 public class UserDao {
@@ -85,15 +84,18 @@ public class UserDao {
 
     }
 
-    public int modifyUserName(PatchUserReq patchUserReq){
-        String modifyUserNameQuery = "update UserInfo set userName = ? where userIdx = ? ";
-        Object[] modifyUserNameParams = new Object[]{patchUserReq.getUserName(), patchUserReq.getUserIdx()};
+    public int modifyUser(int userIdx, PutUserReq putUserReq){
+        String modifyUserNameQuery = "update User set userEmail = ?, userPasswd = ?, phoneNumber = ? where userIdx = ?";
+        Object[] modifyUserNameParams = new Object[]{
+                putUserReq.getUserEmail(), putUserReq.getUserPasswd(),
+                putUserReq.getPhoneNumber(), userIdx
+        };
 
         return this.jdbcTemplate.update(modifyUserNameQuery,modifyUserNameParams);
     }
 
     public User getPwd(PostLoginReq postLoginReq) {
-        String getPwdQuery = "select userIdx, userEmail, userName, userPasswd from User where userEmail = ?";
+        String getPwdQuery = "select userIdx, userEmail, userName, userPasswd, phoneNumber from User where userEmail = ?";
         String getPwdParams = postLoginReq.getEmail();
 
         return this.jdbcTemplate.queryForObject(getPwdQuery,
@@ -101,7 +103,8 @@ public class UserDao {
                         rs.getInt("userIdx"),
                         rs.getString("userEmail"),
                         rs.getString("userName"),
-                        rs.getString("userPasswd")
+                        rs.getString("userPasswd"),
+                        rs.getString("phoneNumber")
                 ),
                 getPwdParams
                 );

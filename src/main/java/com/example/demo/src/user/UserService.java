@@ -57,12 +57,16 @@ public class UserService {
         }
     }
 
-    public void modifyUserName(PatchUserReq patchUserReq) throws BaseException {
+    public void modifyUser(int userIdx, PutUserReq putUserReq) throws BaseException {
+        String pwd;
         try{
-            int result = userDao.modifyUserName(patchUserReq);
+            pwd = new SHA256().encrypt(putUserReq.getUserPasswd());
+            putUserReq.setUserPasswd(pwd);
+            int result = userDao.modifyUser(userIdx, putUserReq);
             if(result == 0){
                 throw new BaseException(MODIFY_FAIL_USERNAME);
             }
+
         } catch(Exception exception){
             throw new BaseException(DATABASE_ERROR);
         }

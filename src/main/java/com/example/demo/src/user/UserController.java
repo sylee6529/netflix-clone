@@ -9,8 +9,6 @@ import com.example.demo.utils.JwtService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 
 import static com.example.demo.config.BaseResponseStatus.*;
 import static com.example.demo.utils.ValidationRegex.isRegexEmail;
@@ -114,25 +112,18 @@ public class UserController {
     }
 
     /**
-     * 유저정보변경 API
-     * [PATCH] /users/:userIdx
+     * 사용자 계정 정보 수정 API
+     * [PATCH] /users/account
      * @return BaseResponse<String>
      */
     @ResponseBody
-    @PatchMapping("/{userIdx}")
-    public BaseResponse<String> modifyUserName(@PathVariable("userIdx") int userIdx, @RequestBody User user){
+    @PutMapping("/account")
+    public BaseResponse<String> modifyUser(@RequestHeader("X-ACCESS-TOKEN") String jwtToken, @RequestBody PutUserReq putUserReq){
         try {
-            //jwt에서 idx 추출.
             int userIdxByJwt = jwtService.getUserIdx();
-            //userIdx와 접근한 유저가 같은지 확인
-            if(userIdx != userIdxByJwt){
-                return new BaseResponse<>(INVALID_USER_JWT);
-            }
-            //같다면 유저네임 변경
-            PatchUserReq patchUserReq = new PatchUserReq(userIdx,user.getUserName());
-            userService.modifyUserName(patchUserReq);
+            userService.modifyUser(userIdxByJwt, putUserReq);
 
-            String result = "";
+            String result = "요청 성공";
         return new BaseResponse<>(result);
         } catch (BaseException exception) {
             return new BaseResponse<>((exception.getStatus()));
