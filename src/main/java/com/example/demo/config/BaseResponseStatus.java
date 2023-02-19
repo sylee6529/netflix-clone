@@ -35,6 +35,10 @@ public enum BaseResponseStatus {
     POST_USERS_INVALID_CARD_EXPIRATION_DATE(false, 2022, "카드 유효기간 형식을 확인해주세요."),
 
 
+    // [GET] /users/account
+    GET_USERS_DUPLICATED_PHONE_NUMBER(false, 2027, "다른 계정에서 사용중인 휴대폰 번호입니다."),
+
+
 
     /**
      * 3000 : Response 오류

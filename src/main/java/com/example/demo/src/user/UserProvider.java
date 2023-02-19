@@ -30,25 +30,25 @@ public class UserProvider {
         this.jwtService = jwtService;
     }
 
-    public List<GetUserRes> getUsers() throws BaseException{
-        try{
-            List<GetUserRes> getUserRes = userDao.getUsers();
-            return getUserRes;
-        }
-        catch (Exception exception) {
-            throw new BaseException(DATABASE_ERROR);
-        }
-    }
+//    public List<GetUserRes> getUsers() throws BaseException{
+//        try{
+//            List<GetUserRes> getUserRes = userDao.getUsers();
+//            return getUserRes;
+//        }
+//        catch (Exception exception) {
+//            throw new BaseException(DATABASE_ERROR);
+//        }
+//    }
 
-    public List<GetUserRes> getUsersByEmail(String email) throws BaseException{
-        try{
-            List<GetUserRes> getUsersRes = userDao.getUsersByEmail(email);
-            return getUsersRes;
-        }
-        catch (Exception exception) {
-            throw new BaseException(DATABASE_ERROR);
-        }
-                    }
+//    public List<GetUserRes> getUsersByEmail(String email) throws BaseException{
+//        try{
+//            List<GetUserRes> getUsersRes = userDao.getUsersByEmail(email);
+//            return getUsersRes;
+//        }
+//        catch (Exception exception) {
+//            throw new BaseException(DATABASE_ERROR);
+//        }
+//    }
 
 
     public GetUserRes getUser(int userIdx) throws BaseException {
