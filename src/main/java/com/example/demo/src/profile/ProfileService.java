@@ -58,4 +58,16 @@ public class ProfileService {
         }
     }
 
+    public void deleteProfile(int profileId) throws BaseException {
+        try{
+            int result = profileDao.deleteProfile(profileId);
+            if(result == 0){
+                throw new BaseException(MODIFY_FAIL_USERNAME);
+            }
+
+        } catch(Exception exception){
+            throw new BaseException(DATABASE_ERROR);
+        }
+    }
+
 }

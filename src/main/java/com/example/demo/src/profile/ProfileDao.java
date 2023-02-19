@@ -71,14 +71,21 @@ public class ProfileDao {
     }
 
     public int modifyProfile(int profileId, GetProfileRes getProfileRes) {
-        String modifyUserNameQuery = "update UserProfile set profileName = ?, imageId = ?, displayLanguage = ?, " +
+        String modifyProfileQuery = "update UserProfile set profileName = ?, imageId = ?, displayLanguage = ?, " +
                 "audioSubtitleLanguage = ?, isEpisodeAutoplay = ?, isPreviewAutoplay = ? where profileId = ?";
-        Object[] modifyUserNameParams = new Object[] {
+        Object[] modifyProfileParams = new Object[] {
                 getProfileRes.getProfileName(), getProfileRes.getImageId(), getProfileRes.getDisplayLanguage(),
                 getProfileRes.getAudioAndsubtitleLanguage(), getProfileRes.getIsEpisodeAutoplay(),
                 getProfileRes.getIsPreviewAutoplay(), profileId
         };
 
-        return this.jdbcTemplate.update(modifyUserNameQuery,modifyUserNameParams);
+        return this.jdbcTemplate.update(modifyProfileQuery,modifyProfileParams);
+    }
+
+    public int deleteProfile(int profileId) {
+        String deleteProfileQuery = "delete from UserProfile where profileId = ?";
+        String getProfilesParams = String.valueOf(profileId);
+
+        return this.jdbcTemplate.update(deleteProfileQuery, getProfilesParams);
     }
 }

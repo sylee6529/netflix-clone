@@ -110,4 +110,22 @@ public class ProfileController {
         }
     }
 
+    /**
+     * 사용자 프로필 삭제
+     * [DELETE] /profiles/:profileIdx
+     * @return BaseResponse<String>
+     */
+    @ResponseBody
+    @DeleteMapping("/{profileIdx}")
+    public BaseResponse<String> deleteProfile(@RequestHeader("X-ACCESS-TOKEN") String jwtToken, @PathVariable("profileIdx") int profileIdx){
+        try {
+            profileService.deleteProfile(profileIdx);
+
+            String result = "요청 성공";
+            return new BaseResponse<>(result);
+        } catch (BaseException exception) {
+            return new BaseResponse<>((exception.getStatus()));
+        }
+    }
+
 }
