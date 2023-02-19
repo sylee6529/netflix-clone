@@ -5,6 +5,7 @@ import com.example.demo.config.BaseResponse;
 import com.example.demo.src.profile.model.GetProfileRes;
 import com.example.demo.src.profile.model.PostProfileReq;
 import com.example.demo.src.profile.model.PostProfileRes;
+import com.example.demo.src.profile.model.Profile;
 import com.example.demo.src.user.UserProvider;
 import com.example.demo.src.user.UserService;
 import com.example.demo.src.user.model.GetUserRes;
@@ -15,6 +16,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 import static com.example.demo.config.BaseResponseStatus.POST_USERS_INVALID_EMAIL;
 import static com.example.demo.utils.ValidationRegex.isRegexEmail;
@@ -57,7 +60,7 @@ public class ProfileController {
     /**
      * 사용자 프로필 상세 조회
      * [GET] /profiles/:profileIdx
-     * @return BaseResponse<GetUserRes>
+     * @return BaseResponse<GetProfileRes>
      */
     @ResponseBody
     @GetMapping("/{profileIdx}") // (GET) 127.0.0.1:9000/app/profiles/:profileIdx
@@ -69,6 +72,23 @@ public class ProfileController {
             return new BaseResponse<>((exception.getStatus()));
         }
 
+    }
+
+    /**
+     * 프로필 목록 조회
+     * [GET] /profiles/list
+     * @return BaseResponse<List<GetUserRes>>
+     */
+    @ResponseBody
+    @GetMapping("/list") // (GET) 127.0.0.1:9000/app/profiles/list
+    public BaseResponse<List<Profile>> getProfiles(@RequestHeader("X-ACCESS-TOKEN") String jwtToken) {
+        try{
+            int userIdx = jwtService.getUserIdx();
+            List<Profile> getProfilesRes = profileProvider.getProfiles(userIdx);
+            return new BaseResponse<>(getProfilesRes);
+        } catch(BaseException exception){
+            return new BaseResponse<>((exception.getStatus()));
+        }
     }
 
 }

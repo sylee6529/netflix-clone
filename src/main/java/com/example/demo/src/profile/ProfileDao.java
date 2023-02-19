@@ -3,12 +3,14 @@ package com.example.demo.src.profile;
 import com.example.demo.config.BaseException;
 import com.example.demo.src.profile.model.GetProfileRes;
 import com.example.demo.src.profile.model.PostProfileReq;
+import com.example.demo.src.profile.model.Profile;
 import com.example.demo.src.user.model.GetUserRes;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
+import java.util.List;
 
 @Repository
 public class ProfileDao {
@@ -54,5 +56,16 @@ public class ProfileDao {
                         rs.getString("isEpisodeAutoplay"),
                         rs.getString("isPreviewAutoplay")),
                 getProfileParams);
+    }
+
+    public List<Profile> getProfiles(int userIdx) {
+        String getProfilesQuery = "select profileName, imageId, maturityRating from UserProfile where userIdx = ?";
+        String getProfilesParams = String.valueOf(userIdx);
+        return this.jdbcTemplate.query(getProfilesQuery,
+                (rs, rowNum) -> new Profile(
+                        rs.getString("profileName"),
+                        rs.getInt("imageId"),
+                        rs.getString("maturityRating")),
+                getProfilesParams);
     }
 }
