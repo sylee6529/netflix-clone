@@ -1,0 +1,19 @@
+### Example user template template
+### Example user template
+
+# IntelliJ project files
+.idea
+*.iml
+*.iws
+out
+gen
+.gradle
+build
+
+# jwt 관련 파일
+src/main/java/com/example/demo/utils/SHA256.java
+src/main/java/com/example/demo/config/secret
+
+# db 설정 파일
+src/main/resources/application.yml
+
