@@ -13,8 +13,8 @@ public class PostUserReq {
     private String userEmail;
     private String userPasswd;
     private String userName;
-    private String birth;
-    private String cardExpirationDate;
+    private Date birth;
+    private Date cardExpirationDate;
     private String membership;
     private String cardNumber;
 }
